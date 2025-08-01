@@ -32,3 +32,16 @@ export async function deleteUser(id) {
     throw new Error(`Erro ao excluir usuário (status ${res.status})`)
   }
 }
+
+export async function updateUser(id, payload) {
+  const res = await fetch(`/api/v1/usuarios/${id}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  })
+  if (!res.ok) {
+    const err = await res.json().catch(() => null)
+    throw new Error(err?.message || 'Erro ao atualizar usuário')
+  }
+  return res.json()
+}

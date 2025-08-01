@@ -1,10 +1,24 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { fetchCep } from '../services/Api'
 
-export function CepInput({ onSuccess }) {
+export function CepInput({ onSuccess, initialCep, skipInitialFetch = false }) {
   const [cep, setCep] = useState('')
   const [validated, setValidated] = useState(false)
   const [error, setError] = useState('')
+
+  useEffect(() => {
+    if (!initialCep) return;
+    setCep(initialCep);
+    setValidated(true);
+    if (!skipInitialFetch) { // só faz fetch se não estiver pulando (ex: em edição)
+      fetchCep(initialCep)
+        .then(data => {
+          onSuccess(prev => ({ ...(prev || {}), ...data, cep: initialCep }));
+          setValidated(true);
+        })
+        .catch(err => setError(err.message));
+    }
+  }, [initialCep, skipInitialFetch]);
 
   const handleChange = e => {
     setCep(e.target.value.replace(/\D/g, '').slice(0, 8))
@@ -18,7 +32,7 @@ export function CepInput({ onSuccess }) {
     }
     try {
       const data = await fetchCep(cep)
-       onSuccess({ ...data, cep })
+      onSuccess({ ...data, cep })
       setValidated(true)
     } catch (err) {
       setError(err.message)

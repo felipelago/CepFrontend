@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { fetchUsers, deleteUser } from '../services/Api'
 
-export function ListUsers() {
+export function ListUsers({ onEdit }) {
     const [users, setUsers] = useState([])
     const [error, setError] = useState('')
 
@@ -38,6 +38,7 @@ export function ListUsers() {
                             <th>CEP</th>
                             <th>Logradouro</th>
                             <th>Bairro</th>
+                            <th>Cidade</th>
                             <th>Estado</th>
                             <th>Criado em</th>
                             <th>Ações</th>
@@ -51,10 +52,12 @@ export function ListUsers() {
                                 <td>{u.cep}</td>
                                 <td>{u.logradouro}</td>
                                 <td>{u.bairro}</td>
+                                <td>{u.cidade}</td>
                                 <td>{u.estado}</td>
                                 <td>{new Date(u.dataCriacao).toLocaleString()}</td>
                                 <td>
-                                    <button className="btn btn-sm btn-primary me-2">
+                                    <button className="btn btn-sm btn-primary me-2"
+                                        onClick={() => onEdit(u)}>
                                         <i className="bi bi-pencil"></i>
                                     </button>
                                     <button className="btn btn-sm btn-danger"

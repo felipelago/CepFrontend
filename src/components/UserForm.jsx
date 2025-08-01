@@ -1,10 +1,21 @@
-import { useState } from 'react'
-import { saveUser } from '../services/Api'
+import { useState, useEffect } from 'react'
 
-export function UserForm({ address }) {
+export function UserForm({
+  initialData = {},
+  onSubmit,
+  submitLabel = 'Salvar Usuário'
+}) {
   const [name, setName] = useState('')
   const [cpf, setCpf] = useState('')
   const [error, setError] = useState('')
+
+  // popula campos ao mudar initialData (no edit)
+  useEffect(() => {
+    if (initialData) {
+      setName(initialData.nome || '')
+      setCpf(initialData.cpf || '')
+    }
+  }, [initialData])
 
   const handleSave = async () => {
     setError('')
@@ -12,21 +23,11 @@ export function UserForm({ address }) {
       setError('Nome e CPF são obrigatórios.')
       return
     }
-
-    const payload = {
-      nome: name,
-      cpf: cpf.replace(/\D/g, ''),
-      cep: address.cep,
-      logradouro: address.logradouro,
-      bairro: address.bairro,
-      cidade: address.localidade,
-      estado: address.estado,
-    }
-
     try {
-      await saveUser(payload)
-      alert('Usuário salvo com sucesso!')
-      setName(''); setCpf('')
+      await onSubmit({
+        nome: name,
+        cpf: cpf.replace(/\D/g, '')
+      })
     } catch (err) {
       setError(err.message)
     }
@@ -55,7 +56,7 @@ export function UserForm({ address }) {
         />
       </div>
       <button className="btn btn-success" onClick={handleSave}>
-        Salvar Usuário
+        {submitLabel}
       </button>
       {error && <div className="text-danger mt-2">{error}</div>}
     </div>
