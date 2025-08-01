@@ -37,6 +37,6 @@ cd cepfrontend</pre>
 
 <ul>
   <li>[ ] Adicionar testes unitários</li>
-  <li>[ ] Diminuir o acomplamento dos componentes</li>
+  <li>[ ] Diminuir o acoplamento dos componentes</li>
   <li>[ ] Melhorar as validações dos campos evitando bugs</li>
 </ul>
