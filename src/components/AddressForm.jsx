@@ -1,41 +1,56 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react'
 
 export function AddressForm({ initial, onChange }) {
-  const [addr, setAddr] = useState(initial);
+  const [addr, setAddr] = useState(initial)
 
   useEffect(() => {
-    setAddr(initial);
-  }, [initial]);
+    setAddr(initial)
+  }, [initial])
 
-  if (!addr) return null;
+  if (!addr) return null
 
   const handle = field => e => {
-    const next = { ...addr, [field]: e.target.value };
-    setAddr(next);
-    onChange(next);
-  };
+    const next = { ...addr, [field]: e.target.value }
+    setAddr(next)
+    onChange(next)
+  }
 
   return (
-    <div style={{ marginBottom: 16 }}>
-      <label>
-        Logradouro:&nbsp;
-        <input value={addr.logradouro} onChange={handle('logradouro')} />
-      </label>
-      <br />
-      <label>
-        Bairro:&nbsp;
-        <input value={addr.bairro} onChange={handle('bairro')} />
-      </label>
-      <br />
-      <label>
-        Cidade:&nbsp;
-        <input value={addr.localidade} onChange={handle('localidade')} />
-      </label>
-      <br />
-      <label>
-        Estado:&nbsp;
-        <input value={addr.uf} onChange={handle('uf')} />
-      </label>
+    <div className="mb-3">
+      <div className="row g-2">
+        <div className="col-12">
+          <input
+            className="form-control"
+            value={addr.logradouro}
+            onChange={handle('logradouro')}
+            placeholder="Logradouro"
+          />
+        </div>
+        <div className="col-md-6">
+          <input
+            className="form-control"
+            value={addr.bairro}
+            onChange={handle('bairro')}
+            placeholder="Bairro"
+          />
+        </div>
+        <div className="col-md-6">
+          <input
+            className="form-control"
+            value={addr.localidade}
+            onChange={handle('localidade')}
+            placeholder="Cidade"
+          />
+        </div>
+        <div className="col-md-4">
+          <input
+            className="form-control"
+            value={addr.estado}
+            onChange={handle('estado')}
+            placeholder="Estado"
+          />
+        </div>
+      </div>
     </div>
-  );
+  )
 }
